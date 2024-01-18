@@ -19,16 +19,20 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 export class CoffeesController {
     constructor(private readonly coffeesService : CoffeesService) {}
     @Get()
-    findAll(@Query() paginationQuery) {
+    async findAll(@Query() paginationQuery) {
         const { offset, limit } = paginationQuery;
-
-        return this.coffeesService.findAll();
+        
+        return await this.coffeesService.findAll();
     }
 
     @Get(':id')
     async findOne(@Param('id') id: string) {
-        const coffee = this.coffeesService.findOne(id)
-        return this.coffeesService.findOne(id);
+        let coffee = await this.coffeesService.findOne(id);
+
+        coffee = coffee.toObject();
+        const { __v, ...resultat } = coffee;
+
+        return resultat;
     }
 
     @Post()
