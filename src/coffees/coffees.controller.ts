@@ -14,15 +14,21 @@ import {
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Controller('coffees')
 export class CoffeesController {
     constructor(private readonly coffeesService : CoffeesService) {}
     @Get()
-    async findAll(@Query() paginationQuery) {
-        const { offset, limit } = paginationQuery;
-        
-        return await this.coffeesService.findAll();
+    async findAll(@Query() paginationQuery : PaginationQueryDto) {
+
+        return await this.coffeesService.findAll(paginationQuery);
+    }
+
+    @Get('recommend/:id')
+    async recommend(@Param('id') id: string)
+    {
+        return this.coffeesService.recommend(id);
     }
 
     @Get(':id')
