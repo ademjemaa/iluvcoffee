@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
+
 @Schema()
 export class Coffee extends Document {
     @Prop({ index : true})

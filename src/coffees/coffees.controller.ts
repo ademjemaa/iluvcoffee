@@ -15,6 +15,7 @@ import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { ApiResponse, ApiForbiddenResponse } from '@nestjs/swagger';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -31,6 +32,9 @@ export class CoffeesController {
         return this.coffeesService.recommend(id);
     }
 
+    @ApiForbiddenResponse({ description : "You are not authorized to access this coffee " })
+    @ApiResponse({ status : HttpStatus.OK, description : "OK" })
+    @ApiResponse({ status : HttpStatus.ACCEPTED, description : "Accepted" })
     @Get(':id')
     async findOne(@Param('id') id: string) {
         let coffee = await this.coffeesService.findOne(id);
